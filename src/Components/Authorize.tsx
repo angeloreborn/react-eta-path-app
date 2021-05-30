@@ -1,32 +1,45 @@
-import React, { PureComponent, ReactNode } from 'react'
-
+import React from 'react'
+import { 
+    useParams,
+    useLocation,
+    useHistory,
+} from "react-router-dom";
+import Redirect from './Redirect';
 interface Props {
-    token: string
+    token: string | undefined
     children: any
-}
-interface State {
-    token: string,
 }
 
 /*
  * Authorize component wraps around routed components 
  * that require the current authorization token
  */
-class Authorize extends PureComponent<Props, State> {
-    constructor(props: Props) {
-        super(props)
-        
-        this.state = {
-            token: this.props.token,
-        }
-        this.render = this.render.bind(this)   
-    }
+function Authorize(props: Props) {
+    let history = useHistory()
+    let params = useParams()   
+    let location = useLocation()
 
-    // Clones child props to push new prop'token'
-    render(): ReactNode {
-        const Child = React.cloneElement(this.props.children, {token:this.state.token}, null)
-        return (<>{Child}</>)
+    // Requests user authentication
+    // Redirects to callback after success
+    if (props.token === undefined){
+        history.push({
+             pathname:'/signin',
+             search:`callback=${location.pathname}`       
+         })
     }
+    const {
+        children,
+        token
+    } = props
+
+    const Child = React.cloneElement(children, {
+        token:token,
+        params: params,
+    }, null)
+
+    if (!props.token)
+    return (<Redirect to='/signin'/>)
+    return (<>{Child}</>)
 }
 
 export default Authorize
