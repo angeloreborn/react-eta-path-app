@@ -60,7 +60,10 @@ class PackageIndex extends PureComponent<Props, State> {
             return (
                 <main>
                     <h1>Package Index</h1>
-                    <button>New package</button>
+                    <Link to="/package/new">
+                        <button>New package</button>
+                    </Link>
+
                     <table>
                         <thead>
                             <tr>
@@ -82,12 +85,11 @@ class PackageIndex extends PureComponent<Props, State> {
                                     <td>{pkg.created_at}</td>
                                     <td>{pkg.updated_at}</td>
 
-                                    <Link to={`/view/${pkg.id}`}>view</Link>
-                                    <Link to={`/edit/${pkg.id}`}>edit</Link>
-                                    <Link to={`/delete/${pkg.id}`}>delete</Link>
+                                    <Link to={`/package/view/${pkg.id}`}>view</Link>
+                                    <Link to={`/package/edit/${pkg.id}`}>edit</Link>
+                                    <Link to={`/package/delete/${pkg.id}`}>delete</Link>
                                 </tr>
                             ))}
-
                         </tbody>
                     </table>
                 </main>
