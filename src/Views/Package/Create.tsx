@@ -28,13 +28,16 @@ class Create extends PureComponent<Props, State> {
                 'Authorization': 'Bearer ' + this.props.token,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(packageFormData)
+            body: JSON.stringify({
+                package: packageFormData
+            })
         }
 
         fetch('http://localhost:3000/api/v1/create_package', options)
             .then(res => res.json())
             .then(json => {
                 this.redirectToView()
+                console.log(json)
             })
     }
 
