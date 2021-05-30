@@ -1,9 +1,15 @@
-import { PureComponent, ReactNode} from 'react'
-
-import './App.css';
-import Signin from './Views/User/SignIn'
+import { PureComponent, ReactNode } from 'react'
 import Authorize from './Components/Authorize'
+import Signin from './Views/User/SignIn'
+import './App.css';
+
+// Views for Package
 import PackageIndex from './Views/Package/Index'
+import PackageView from './Views/Package/View'
+import PackageDelete from './Views/Package/Delete'
+import PackageEdit from './Views/Package/Edit'
+import PackageCreate from './Views/Package/Create'
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -11,10 +17,10 @@ import {
   Link
 } from "react-router-dom";
 
-interface Props {}
+interface Props { }
 
 interface State {
-  token: string
+  token: string | undefined
 }
 
 class App extends PureComponent<Props, State> {
@@ -22,7 +28,7 @@ class App extends PureComponent<Props, State> {
     super(props)
 
     this.state = {
-      token: 'test-token'
+      token: undefined
     }
 
     this.handleToken = this.handleToken.bind(this)
@@ -36,37 +42,57 @@ class App extends PureComponent<Props, State> {
 
   render(): ReactNode {
     return (
-        <Router>
+      <Router>
 
-          <Link to="/">Home</Link>
-          <Link to="/signin">Sign In</Link>
-          <Link to="/package">Packages</Link>
+        <Link to="/">Home</Link>
+        <Link to="/signin">Sign In</Link>
+        <Link to="/package/index">Packages</Link>
 
-          <Switch>
+        <Switch>
 
-            <Route path="/package">
-              <Authorize token={this.state.token}>
-                <PackageIndex />
-              </Authorize>
-            </Route>
+          <Route path="/signin">
+            <Signin pushToken={this.handleToken} />
+          </Route>
 
-            <Route path="/signin">
-              <Signin pushToken={this.handleToken} />
-            </Route>
-            <Route path="/">
-            </Route>
+          <Route path="/package/index">
+            <Authorize token={this.state.token}>
+              <PackageIndex />
+            </Authorize>
+          </Route>
 
-          </Switch>
-          
-        </Router>
+          <Route path="/package/view/:id">
+            <Authorize token={this.state.token}>
+              <PackageView></PackageView>
+            </Authorize>
+          </Route>
+
+          <Route path="/package/edit/:id">
+            <Authorize token={this.state.token}>
+              <PackageEdit></PackageEdit>
+            </Authorize>
+          </Route>
+
+          <Route path="/package/new">
+            <Authorize token={this.state.token}>
+              <PackageCreate></PackageCreate>
+            </Authorize>
+          </Route>
+
+          <Route path="/package/delete/:id">
+            <Authorize token={this.state.token}>
+              <PackageDelete></PackageDelete>
+            </Authorize>
+          </Route>
+
+          <Route path="/">
+            <h1>Home</h1>
+          </Route>
+
+        </Switch>
+
+      </Router>
     )
   }
 }
-
-// function App() {
-//   return (
-
-//   );
-// }
 
 export default App;
