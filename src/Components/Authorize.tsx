@@ -26,6 +26,7 @@ function Authorize(props: Props) {
              pathname:'/signin',
              search:`callback=${location.pathname}`       
          })
+         return <></>
     }
     const {
         children,
@@ -37,8 +38,6 @@ function Authorize(props: Props) {
         params: params,
     }, null)
 
-    if (!props.token)
-    return (<Redirect to='/signin'/>)
     return (<>{Child}</>)
 }
 
