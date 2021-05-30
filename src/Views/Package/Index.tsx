@@ -4,6 +4,7 @@ import {
     BrowserRouter as Router,
     Link
 } from "react-router-dom";
+import PackageItem from '../../Components/PackageItem';
 
 interface Props {
     token?: string
@@ -64,34 +65,28 @@ class PackageIndex extends PureComponent<Props, State> {
                         <button>New package</button>
                     </Link>
 
-                    <table>
-                        <thead>
-                            <tr>
-                                <td>Reference<div>Number</div></td>
-                                <td>Location</td>
-                                <td>Destination</td>
-                                <td>Timeslot</td>
-                                <td>Created On</td>
-                                <td>Last Update</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {this.state.packages.map(pkg => (
-                                <tr key={pkg.id}>
-                                    <td>{pkg.reference_number}</td>
-                                    <td>{pkg.location}</td>
-                                    <td>{pkg.destination}</td>
-                                    <td>{pkg.timeslot}</td>
-                                    <td>{pkg.created_at}</td>
-                                    <td>{pkg.updated_at}</td>
+                    {this.state.packages.map(pkg => {
+                        let time = new Date(pkg.timeslot)
+                        let timeTrail = ''
+                        if (time.getHours() > 12){
+                            timeTrail += 'PM'
+                        }else{
+                            timeTrail += 'AM'
+                        }
+                        let timeHHMM = `${time.getHours()}:${time.getMinutes()}${timeTrail}`
+                        return <div className='package-wrap'>
+                            <PackageItem
+                                    id={pkg.id}
+                                    location={pkg.location}
+                                    destination={pkg.destination}
+                                    date={pkg.date}
+                                    time={timeHHMM}
+                                    reference={pkg.reference_number}
+                                />
+                            </div>
+                    })}
+                    
 
-                                    <Link to={`/package/view/${pkg.id}`}>view</Link>
-                                    <Link to={`/package/edit/${pkg.id}`}>edit</Link>
-                                    <Link to={`/package/delete/${pkg.id}`}>delete</Link>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
                 </main>
             )
         }

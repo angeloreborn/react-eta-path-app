@@ -81,7 +81,7 @@ class SignIn extends PureComponent<Props, State> {
                 if (json.status === 'failed') {
                     // handle fail status   
                 }
-                else{
+                else {
                     this.updateTokenState(json.token)
                     this.setState(() => ({
                         redirect: <Redirect to={this.state.callback} />
@@ -93,24 +93,27 @@ class SignIn extends PureComponent<Props, State> {
     render(): ReactNode {
         return (
             <main>
-                <h1>Sign In</h1>
-                <form onSubmit={this.handleSumbit}>
-                    <div>
-                        <label>
-                            <input id="email" autoComplete="on" placeholder='Enter email' type="email" value={this.state.email} name="email" onChange={this.handleEmailChange} />
-                        </label>
-                    </div>
-                    <div>
-                        <label>
-                            <input placeholder='Enter password' type="password" value={this.state.password} name="name" onChange={this.handlePasswordChange} />
-                        </label>
-                    </div>
-                    <button type="submit">Login</button>
-                </form>
-                {this.state.output}
+                <div className='container-light fade-in'>
+                    <h1>Sign In</h1>
+                    <form onSubmit={this.handleSumbit}>
+                        <div>
+                            <label>
+                                <input id="email" autoComplete="on" placeholder='Enter email' type="email" value={this.state.email} name="email" onChange={this.handleEmailChange} />
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                <input placeholder='Enter password' type="password" value={this.state.password} name="name" onChange={this.handlePasswordChange} />
+                            </label>
+                        </div>
+                        <button type='button'>Sign Up</button>
+                        <button className="btn-cta1" type="submit">Login</button>
 
-                <button onClick={() => this.updateTokenState(Math.random.toString())}>Set Session</button>
-                {this.state.redirect}
+                    </form>
+                    {this.state.output}
+                    {this.state.redirect}
+                </div>
+
             </main>
         )
     }
